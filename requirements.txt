@@ -1,0 +1,8 @@
+librosa==0.10.2
+soundfile==0.12.1
+transformers==4.42.3
+fastapi==0.111.0
+uvicorn==0.30.0
+silero-vad==5.1
+pyyaml==6.0.2
+huggingface-hub==0.23.3

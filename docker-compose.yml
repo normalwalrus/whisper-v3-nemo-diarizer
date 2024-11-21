@@ -1,0 +1,37 @@
+services:
+  asr-service:
+    stdin_open: true
+    tty: true
+    container_name: asr-service
+    image: dinohub-asr/whisper-asr-fastapi-service:0.2.0
+    build:
+      context: $PWD
+      dockerfile: Dockerfile
+    env_file: .env.dev
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+    volumes:
+      - $PWD:/opt/app-root
+      - /home/digitalhub/Desktop/pretrained_models/whisper-large-v3:/opt/app-root/pretrained_models
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    shm_size: 16gb
+    ports:
+      - 8000:8080
+    command:
+      [
+        "fastapi",
+        "dev",
+        "asr_inference_service/main.py",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080",
+      ]
